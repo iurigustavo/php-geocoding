@@ -18,7 +18,7 @@ Sistema de base para importação de clientes e criação de rotas
 
 ### Executar
 
-- git clone `https://github.com/iurigustavo/php-geocoding.git` geocoding
+- git clone `https://github.com/iurigustavo/php-geocoding.git` geocodind
 
 ### Configuração
 - Criar banco de dados com o nome `geocoding`
