@@ -1,0 +1,59 @@
+<?php
+
+
+    namespace App\DataTables;
+
+
+    use App\Http\Helpers\FormUtils;
+    use App\Traits\DataTable;
+    use Illuminate\Database\Eloquent\Builder;
+    use Spatie\Permission\Models\Role;
+    use Yajra\DataTables\DataTableAbstract;
+    use Yajra\DataTables\Html\Column;
+    use Yajra\DataTables\Services\DataTable as YajraDataTable;
+
+    class RolesDataTable extends YajraDataTable
+    {
+        use DataTable;
+
+        public function dataTable($query): DataTableAbstract
+        {
+            return datatables()
+                ->eloquent($query)
+                ->addColumn('action', function ($q) {
+                    return FormUtils::btnShow('perfis.show', $q->id).FormUtils::btnDestroy('perfis.destroy', $q->id);
+                })
+                ->rawColumns([
+                    'action',
+                ])
+                ->order(function ($query) {
+                    $query->orderBy('id', 'desc');
+                });
+
+        }
+
+
+        public function query(Role $model): Builder
+        {
+            return $model->newQuery();
+        }
+
+
+        protected function getColumns(): array
+        {
+            return [
+
+                Column::make('id')->title('ID'),
+                Column::make('name')->title('Nome'),
+                Column::make('guard_name')->title('Guard'),
+                Column::computed('action')
+                      ->exportable(FALSE)
+                      ->printable(FALSE)
+                      ->width(120)
+                      ->title('Ação')
+                      ->addClass('text-center'),
+            ];
+        }
+
+
+    }
