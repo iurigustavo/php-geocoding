@@ -30,6 +30,16 @@
             );
         }
 
+        #[Pure] public static function fromModel(Client $client): self
+        {
+            return new static(
+                name: $client->name,
+                email: $client->email,
+                cpf: $client->cpf,
+                birth_date: $client->birth_date
+            );
+        }
+
         public function handle(): Client
         {
             $client = new Client([

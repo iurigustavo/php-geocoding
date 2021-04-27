@@ -27,10 +27,16 @@
      * @method static Builder|Import whereUpdatedAt($value)
      * @method static Builder|Import whereUserId($value)
      * @mixin \Eloquent
+     * @method static Builder|Import notProcessed()
      */
     class Import extends Model
     {
         use HasFactory;
 
         protected $fillable = ['path', 'total_rows', 'processed', 'user_id'];
+
+        public function scopeNotProcessed(Builder $query)
+        {
+            return $this->where('processed', '=', FALSE);
+        }
     }

@@ -4,6 +4,7 @@
     namespace App\Actions\CEP;
 
 
+    use App\Classes\Cep;
     use App\Http\Helpers\CallAPI;
 
     class SearchCep
@@ -16,13 +17,17 @@
         {
         }
 
-        public function handle(): mixed
+        public function handle(): ?Cep
         {
 
             $url = "https://viacep.com.br/ws/{$this->cep}/json/";
 
-            return CallAPI::request('get', $url);
-
+            $address = CallAPI::request('get', $url);
+            if (optional($address)->erro === TRUE) {
+                return NULL;
+            } else {
+                return Cep::fromObject($address);
+            }
         }
 
     }

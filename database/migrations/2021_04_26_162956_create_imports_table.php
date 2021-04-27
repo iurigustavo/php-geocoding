@@ -16,7 +16,7 @@
             Schema::create('imports', function (Blueprint $table) {
                 $table->id();
                 $table->string('path');
-                $table->integer('total_rows');
+                $table->integer('total_rows')->nullable();
                 $table->boolean('processed')->default(0);
                 $table->foreignId('user_id')->constrained('users');
                 $table->timestamps();

@@ -2,9 +2,14 @@
 
     namespace App\Repositories;
 
+    use App\Actions\Imports\CreateImport;
+    use App\Models\Import;
+    use Illuminate\Foundation\Bus\DispatchesJobs;
     use Illuminate\Support\Facades\Storage;
 
-    class CSVRepository {
+    class CSVRepository
+    {
+        use DispatchesJobs;
 
         /**
          * CSVRepository constructor.
@@ -17,24 +22,23 @@
         /**
          * @param $file
          * @param $extension
+         *
          * @return mixed
          */
-        public function uploadCSV($file, $extension){
+        public function uploadCSV($file, $extension)
+        {
             return $this->upload($file, $extension);
         }
 
         /**
          * @param $file
          * @param $extension
+         *
          * @return mixed
          */
-        private function upload($file, $extension){
-            $path = Storage::putFileAs("myFileName", $file, uniqid().".".$extension);
-            $uploadedFile = Invoice::create([
-                'path' => $path,
-                'processed' => false,
-            ]);
-
-            return $uploadedFile;
+        private function upload($file, $extension): Import
+        {
+            $path = Storage::putFileAs("importacao", $file, uniqid().".".$extension);
+            return $this->dispatchNow(new CreateImport($path));
         }
     }

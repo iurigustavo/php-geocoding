@@ -106,14 +106,16 @@
         public function buscaCep()
         {
             if (strlen($this->model->zipcode) === 8) {
+                /** @var \App\Classes\Cep $address */
                 $address = $this->dispatchNow(new SearchCep($this->model->zipcode));
-                if (optional($address)->erro === TRUE) {
+                if (!$address) {
                     $this->alert('error', 'CEP não localizado');
                 } else {
                     $this->model->street_address = $address->logradouro;
                     $this->model->neighborhood   = $address->bairro;
                     $this->model->city           = $address->localidade;
                     $this->model->state          = $address->uf;
+                    $this->model->zipcode        = $address->cep;
                 }
             }
 
