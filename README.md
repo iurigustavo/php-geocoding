@@ -29,6 +29,8 @@ Sistema de base para importação de clientes e criação de rotas
 
 ```
 composer update
+npm install
+npm run prod
 cp .env.example .env
 php artisan migrate
 php artisan db:seed
