@@ -31,7 +31,7 @@
         */
 
         'use_ico_only'     => FALSE,
-        'use_full_favicon' => TRUE,
+        'use_full_favicon' => false,
 
         /*
         |--------------------------------------------------------------------------
@@ -260,6 +260,16 @@
         */
 
         'plugins' => [
+            'customDelete'  => [
+                'active' => true,
+                'files'  => [
+                    [
+                        'type'     => 'js',
+                        'asset'    => true,
+                        'location' => 'js/customDelete.js',
+                    ],
+                ],
+            ],
             'Datatables'  => [
                 'active' => FALSE,
                 'files'  => [

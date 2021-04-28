@@ -22,6 +22,9 @@
                 $table->string('zipcode', 20);
                 $table->string('city', '100');
                 $table->string('state', '20');
+                $table->double('lat')->nullable();
+                $table->double('lng')->nullable();
+                $table->longText('place_id')->nullable();
                 $table->foreignId('client_id')->constrained('clients');
                 $table->timestamps();
                 $table->softDeletes();

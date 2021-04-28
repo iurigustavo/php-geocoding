@@ -5,6 +5,7 @@
     use App\Http\Controllers\ClientsController;
     use App\Http\Controllers\ImportsController;
     use App\Http\Controllers\PagesController;
+    use App\Http\Controllers\RoutesController;
     use App\Http\Controllers\Sys\AuditsController;
     use App\Http\Controllers\Sys\UsersController;
     use App\Http\Controllers\Sys\UsersProfileController;
@@ -35,14 +36,18 @@
         Route::get('users/profile', [UsersProfileController::class, 'show'])->name('users.profile.show');
         Route::put('users/profile', [UsersProfileController::class, 'update'])->name('users.profile.update');
         Route::get('users/change-role/{id}', [UsersProfileController::class, 'changeRole'])->name('users.changeRole');
+        Route::resource('audits', AuditsController::class)->only('index');
 
         Route::resource('users', UsersController::class)->except('edit');
         Route::resource('clients', ClientsController::class)->except('edit');
         Route::get('addresses', AddressesController::class)->name('addresses');
 
+        Route::get('routes/map/{uuid}', [RoutesController::class,'map'])->name('routes.map');
+        Route::resource('routes', RoutesController::class)->except('edit');
+
         Route::get('imports/download-file/{import}', [ImportsController::class, 'downloadFile'])->name('imports.downloadFile');
         Route::resource('imports', ImportsController::class)->except('edit', 'destroy');
 
-//        Route::resource('routes', 'UsuariosController')->except('edit')->middleware('role:admin');
-        Route::resource('audits', AuditsController::class)->only('index');
+
+
     });

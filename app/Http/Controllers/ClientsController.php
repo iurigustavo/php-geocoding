@@ -9,6 +9,7 @@
     use App\Http\Requests\Client\CreateClientRequest;
     use App\Http\Requests\Client\UpdateClientRequest;
     use App\Models\Client;
+    use App\Models\ClientAddress;
     use Exception;
     use Illuminate\Contracts\Foundation\Application;
     use Illuminate\Contracts\View\Factory;
@@ -34,9 +35,10 @@
         public function create(): Factory|View|Application
         {
 
+
             return view('pages.clients.create', [
-                'page_title' => $this->titulo,
-                'model'      => new Client(),
+                'page_title'           => $this->titulo,
+                'model'                => new Client(),
             ]);
 
         }

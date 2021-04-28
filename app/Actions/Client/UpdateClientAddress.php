@@ -7,6 +7,7 @@
     use App\Http\Requests\ClientAddress\ClientAddressRequest;
     use App\Models\Client;
     use App\Models\ClientAddress;
+    use GoogleMaps;
     use JetBrains\PhpStorm\Pure;
 
     class UpdateClientAddress
@@ -59,6 +60,16 @@
         public function handle(): ClientAddress
         {
 
+            $response = json_decode(GoogleMaps::load('geocoding')
+                                              ->setParam(['address' => $this->address->full_address])
+                                              ->get());
+            if ($response->status == "OK") {
+                $this->address->lat     = $response->results[0]->geometry->location->lat;
+                $this->address->lng     = $response->results[0]->geometry->location->lng;
+                $this->address->place_id = $response->results[0]->place_id;
+            }
+
+
             $this->address->update([
                 'street_address' => $this->street_address,
                 'number'         => $this->number,
@@ -67,8 +78,12 @@
                 'zipcode'        => $this->zipcode,
                 'city'           => $this->city,
                 'state'          => $this->state,
+                'lat'            => $this->address->lat,
+                'lng'            => $this->address->lng,
+                'placeId'        => $this->address->placeId,
                 'client_id'      => $this->client->id,
             ]);
+
 
             return $this->address;
         }

@@ -17,6 +17,6 @@
          */
         public function handle()
         {
-            $this->clientAddress->delete();
+            return $this->clientAddress->delete();
         }
     }

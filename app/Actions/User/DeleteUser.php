@@ -18,6 +18,6 @@
          */
         public function handle()
         {
-            $this->user->delete();
+            return $this->user->delete();
         }
     }

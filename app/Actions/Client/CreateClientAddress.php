@@ -7,6 +7,7 @@
     use App\Http\Requests\ClientAddress\ClientAddressRequest;
     use App\Models\Client;
     use App\Models\ClientAddress;
+    use GoogleMaps;
     use JetBrains\PhpStorm\Pure;
 
     class CreateClientAddress
@@ -55,6 +56,7 @@
 
         public function handle(): ClientAddress
         {
+
             $clientAddress = new ClientAddress([
                 'street_address' => $this->street_address,
                 'number'         => $this->number,
@@ -65,6 +67,15 @@
                 'state'          => $this->state,
                 'client_id'      => $this->client->id,
             ]);
+
+            $response = json_decode(GoogleMaps::load('geocoding')
+                                              ->setParam(['address' => $clientAddress->full_address])
+                                              ->get());
+            if ($response->status == "OK") {
+                $clientAddress->lat      = $response->results[0]->geometry->location->lat;
+                $clientAddress->lng      = $response->results[0]->geometry->location->lng;
+                $clientAddress->place_id = $response->results[0]->place_id;
+            }
 
             $clientAddress->save();
 
